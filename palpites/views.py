@@ -69,19 +69,17 @@ class CadastroPalpite(CreateView):
 def CalculaPontuacao(request):
     form = FormGerarPontos()
 
-    resultado = ResultadoProva.objects.all().values_list('polePosition','segundoLargada','terceiroLargada',
-                                                         'quartoLargada', 'quintoLargada', 'vencedor',
-                                                         'segundoLugar','terceiroLugar','quartoLugar',
-                                                         'quintoLugar','sextoLugar','setimoLugar',
-                                                         'oitavoLugar','nonoLugar','decimoLugar',
-                                                         'voltaRapida')
+    resultado = ResultadoProva.filter(id_calendarioGP=6).values_list('polePosition', 'segundoLargada',
+                                                            'terceiroLargada', 'quartoLargada', 'quintoLargada',
+                                                            'vencedor', 'segundoLugar', 'terceiroLugar', 'quartoLugar',
+                                                            'quintoLugar', 'sextoLugar', 'setimoLugar', 'oitavoLugar',
+                                                             'nonoLugar', 'decimoLugar', 'voltaRapida')
 
-    palp2 = Palpite.objects.all().filter(id=2).values_list('palp_pole', 'palp_segLarg','palp_tercLarg',
-                                                           'palp_quaLarg', 'palp_quinLarg', 'palp_vencedor',
-                                                           'palp_vegLug', 'palp_tercLug', 'palp_quaLug',
-                                                           'palp_quinLug', 'palp_sexLug', 'palp_setLug',
-                                                           'palp_oitLug', 'palp_nonLug', 'palp_decLug',
-                                                           'palp_volta')
+    palp2 = Palpite.objects.all().filter(id_calendarioGP=6).values_list('palp_pole', 'palp_segLarg',
+                                                            'palp_tercLarg', 'palp_quaLarg', 'palp_quinLarg',
+                                                            'palp_vencedor', 'palp_vegLug', 'palp_tercLug',
+                                                            'palp_quaLug', 'palp_quinLug', 'palp_sexLug', 'palp_setLug',
+                                                            'palp_oitLug', 'palp_nonLug', 'palp_decLug', 'palp_volta')
 
     for indice_p, valor_p in enumerate(palp2):
         if valor_p == resultado.__getitem__(indice_p):

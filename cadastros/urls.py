@@ -15,4 +15,6 @@ urlpatterns = patterns('',
                        url(r'^register/$', register_page),
                        url(r'^register/success/$', TemplateView.as_view(
                            template_name='registration/register_success.html')),
+                       url(r'^lista-gps/$', ListaGP.as_view(), name='listaGP'),
                        )
+

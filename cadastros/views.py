@@ -38,6 +38,12 @@ def register_page(request):
     return render_to_response('registration/register.html', variables)
 
 
+class ListaGP(ListView):
+    template_name = 'lista-gp.html'
+    model = CalendarioGP
+    # context_object_name = 'lista_gp'
+
+
     # if request.method == 'POST':
     #     form = RegistrationForm(request.POST)
     #     if form.is_valid():
