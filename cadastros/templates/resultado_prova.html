@@ -1,0 +1,81 @@
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 5px;
+        }
+</style>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div class="container">
+    <div class="panel-group">
+        <div class="panel-primary">
+            <div class="panel-heading">
+                <h1>Lista Resultados do GP - teste</h1>
+            </div>
+            <div clas="panel-body">
+                <table class="table-condensed table-striped">
+                    <thead>
+                        <tr>
+                            <th>GP</th>
+                            <th>Pole Position</th>
+                            <th>Segundo largada</th>
+                            <th>Terceiro largada</th>
+                            <th>Quarto largada</th>
+                            <th>Quinto largada</th>
+                            <th>Vencedor</th>
+                            <th>Segundo lugar</th>
+                            <th>Terceiro lugar</th>
+                            <th>Quarto lugar</th>
+                            <th>Quinto lugar</th>
+                            <th>Sexto lugar</th>
+                            <th>Setimo lugar</th>
+                            <th>Oitavo lugar</th>
+                            <th>Nono lugar</th>
+                            <th>Decimo lugar</th>
+                            <th>Melhor volta</th>
+                        </tr>
+                    </thead>
+
+                        {% for resultadoprova in resultadoprova_list %}
+                            <tr>
+                                <td>{{ resultadoprova.id_calendarioGP }}</td>
+                                <td>{{ resultadoprova.polePosition }}</td>
+                                <td>{{ resultadoprova.segundoLargada }}</td>
+                                <td>{{ resultadoprova.terceiroLargada }}</td>
+                                <td>{{ resultadoprova.quartoLargada }}</td>
+                                <td>{{ resultadoprova.quintoLargada }}</td>
+                                <td>{{ resultadoprova.vencedor }}</td>
+                                <td>{{ resultadoprova.segundoLugar }}</td>
+                                <td>{{ resultadoprova.terceiroLugar }}</td>
+                                <td>{{ resultadoprova.quartoLugar }}</td>
+                                <td>{{ resultadoprova.quintoLugar }}</td>
+                                <td>{{ resultadoprova.sextoLugar }}</td>
+                                <td>{{ resultadoprova.setimoLugar }}</td>
+                                <td>{{ resultadoprova.oitavoLugar }}</td>
+                                <td>{{ resultadoprova.nonoLugar }}</td>
+                                <td>{{ resultadoprova.decimoLugar }}</td>
+                                <td>{{ resultadoprova.voltaRapida }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td>Sem palpites.</td>
+                            </tr>
+                        {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

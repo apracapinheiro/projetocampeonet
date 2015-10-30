@@ -1,0 +1,11 @@
+    {% for calculapontucao in calculapontuacao_list %}
+                            <tr>
+                                <td>{{ resultadoprova.id_calendarioGP }}</td>
+                                <td>{{ resultadoprova.polePosition }}</td>
+                                <td>{{ calculapontucao.all }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td>Sem palpites.</td>
+                            </tr>
+                        {% endfor %}

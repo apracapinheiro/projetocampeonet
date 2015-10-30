@@ -1,0 +1,14 @@
+{%  extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+{% load bootstrap3 %}
+
+
+    {% csrf_token %}
+
+        {{ form.comentario }}
+
+
+                <input type="submit" value="Registrar Palpite"/>
+
+{% endblock %}

@@ -1,0 +1,142 @@
+
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 5px;
+        }
+</style>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div class="container">
+    <div class="panel-group">
+        <div class="panel-primary">
+            <div class="panel-heading">
+                <h1>Lista palpites - teste</h1>
+            </div>
+            <div clas="panel-body">
+                <table class="table-condensed table-striped">
+                <thead>
+                    <tr>
+                        <th>Participante</th>
+                        <th>data palpite</th>
+                        <th>comentario</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        {% for palpite in palpite_list %}
+                            <tr>
+                                <td>{{ palpite.participante }}</td>
+                                <td>{{ palpite.data_palpite }}</td>
+                                <td>{{ palpite.comentario }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td>Sem palpites.</td>
+                            </tr>
+                        {% endfor %}
+                </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <div class="panel-info">
+            <div class="panel-heading">
+                    <h1>Palpite Grid Largada</h1>
+            </div>
+            <div class="panel-body">
+                    <table class="table table-striped table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Participante</th>
+                            <th>pole position</th>
+                            <th>Segundo largada</th>
+                            <th>Terceiro largada</th>
+                            <th>Quarto largada</th>
+                            <th>Quinto largada</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            {% for palpite in palpite_list %}
+                                <tr>
+                                    <td>{{ palpite.participante }}</td>
+                                    <td>{{ palpite.palp_pole.nome_piloto }}</td>
+                                    <td>{{ palpite.palp_segLarg.nome_piloto }}</td>
+                                    <td>{{ palpite.palp_tercLarg.nome_piloto }}</td>
+                                    <td>{{ palpite.palp_quaLarg.nome_piloto }}</td>
+                                    <td>{{ palpite.palp_quinLarg.nome_piloto }}</td>
+
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td>Sem palpites.</td>
+                                </tr>
+                            {% endfor %}
+                    </tbody>
+                    </table>
+            </div>
+        </div>
+
+        <div class="panel-success">
+            <div class="panel-heading">
+                <h1>Palpite Final Corrida</h1>
+            </div>
+
+            <div class="panel-body">
+                <table class="table table-striped table-condensed">
+                <thead>
+                    <tr>
+                        <th>Participante</th>
+                        <th>Vencedor</th>
+                        <th>Segundo lugar</th>
+                        <th>Terceiro lugar</th>
+                        <th>Quarto lugar</th>
+                        <th>Quinto lugar</th>
+                        <th>Sexto lugar</th>
+                        <th>Setimo lugar</th>
+                        <th>Oitavo lugar</th>
+                        <th>Nono lugar</th>
+                        <th>Decimo lugar</th>
+                        <th>Melhor volta</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        {% for palpite in palpite_list %}
+                            <tr>
+                                <td>{{ palpite.participante }}</td>
+                                <td>{{ palpite.palp_vencedor.nome_piloto }}</td>
+                                <td>{{ palpite.palp_vegLug.nome_piloto }}</td>
+                                <td>{{ palpite.palp_tercLug.nome_piloto }}</td>
+                                <td>{{ palpite.palp_quaLug.nome_piloto }}</td>
+                                <td>{{ palpite.palp_quinLug.nome_piloto }}</td>
+                                <td>{{ palpite.palp_sexLug }}</td>
+                                <td>{{ palpite.palp_setLug }}</td>
+                                <td>{{ palpite.palp_oitLug }}</td>
+                                <td>{{ palpite.palp_nonLug }}</td>
+                                <td>{{ palpite.palp_decLug }}</td>
+                                <td>{{ palpite.palp_volta }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td>Sem palpites.</td>
+                            </tr>
+                        {% endfor %}
+                </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

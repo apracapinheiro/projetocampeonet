@@ -1,0 +1,58 @@
+{% load staticfiles %}
+<html>
+    <head>
+{#    {% load bootstrap3 %}#}
+        <title>Site do CampeoNET | {% block title %}{% endblock %}</title>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="{% static 'css/materialize.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+        <link href="{% static 'css/style.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+        {% block script %}{% endblock %}
+
+{#        <link rel="stylesheet" href="/static/style.css" type="text/css" />#}
+    </head>
+    <body>
+        <div id="nav">
+            <a href="/">home</a> |
+                {% if user.is_authenticated %}
+                    Bem vindo {{ user.username }}
+                    (<a href="/logout">Logout</a>)
+                {% else %}
+                    <a href="/login/">Login</a>|
+                    <a href="/register/">Registrar</a>
+                {% endif %}
+        </div>
+            <h1>{% block head %}{% endblock %}</h1>
+                <div class="container">
+                    {% block content %}
+                    {% endblock %}
+                </div>
+            {% block js %}
+            {% endblock %}
+
+                 <!--  Scripts-->
+              <script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
+              <script src="{% static 'js/materialize.js' %}"></script>
+              <script src="{% static 'js/init.js' %}"></script>
+              <script>$(document).ready(function() {
+                $('select').material_select();
+              });
+              </script>
+              <script> $('.datepicker').pickadate({
+                selectMonths: true, // Creates a dropdown to control month
+                selectYears: 15 // Creates a dropdown of 15 years to control year
+              });
+              </script>
+                <script>$(document).ready(function() {
+                $('input#input_text, textarea#textarea1').characterCounter();
+              });
+              </script>
+              <script>
+                $(".dropdown-button").dropdown();
+
+
+              </script>
+    </body>
+</html>
+
+
+

@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block content %}
+<h4>Cadastro de Participante</h4>
+<fieldset class="z-depth-1">
+    <form action="" method="post">{% csrf_token %}
+        {{ form.as_p }}
+        <div class="fixed-action-btn" style="bottom: 4%; right: 8%;">
+            <button type="submit" name="action" class="btn-floating btn-large waves-effect waves-light light-blue
+                          lighten-1 save" title="Cadastrar participante">
+{#                <input type="submit" value="Create" />#}
+                <i class="large material-icons">save</i>
+            </button>
+        </div>
+    </form>
+</fieldset>
+
+{#    <div class="row">#}
+{##}
+{#    <form method="post" class="col s12">#}
+{#        <fieldset class="z-depth-1">#}
+{#            {% csrf_token %}#}
+    {#        {{ form.as_p }}#}
+{##}
+{##}
+        {#            {% for field in form %}#}
+{##}
+{#                <div class="input-field col s12 m6 validate">#}
+{#                    {{ form.nome }}#}
+{#                    <label for="{{ form.nome.id_for_label }}">{{ form.nome.label }}</label>#}
+{#                </div>#}
+{#                <div class="input-field col s12 m6 validate">#}
+{#                    {{ form.endereco }}#}
+{#                    <label for="{{ form.endereco.id_for_label }}">{{ form.endereco.label }}</label>#}
+{#                </div>#}
+{#                <div class="input-field col s12 m6 validate">#}
+{#                    <input id="{{ form.telefone.id_for_label }}" type="text" pattern="-?[0-9]*(\.[0-9]+)?" class="validate" name="{{ form.telefone.label }}">#}
+{#                    <label for="{{ form.telefone.id_for_label }}" data-error="Digite somente numeros">{{ form.telefone.label }}</label>#}
+{#                </div>#}
+{#                <div class="input-field col s12 m6 validate">#}
+{#                    <input id="{{ form.email.id_for_label }}" type="email" class="validate" name="{{ form.email.label }}"/>#}
+{#                    <label for="{{ form.email.id_for_label }}" data-error="Email invalido!">{{ form.email.label }}</label>#}
+{#                </div>#}
+{#                <div class="input-field col s12 m6 validate">#}
+{#                    {{ form.login }}#}
+{#                    <label for="{{ form.login.id_for_label }}">{{ form.login.label }}</label>#}
+{#                </div>#}
+{#                <div class="input-field col s12 m6 validate">#}
+{#                    <input id="{{ form.senha.id_for_label }}" class="validate" type="password" name="{{ form.senha.label }}" maxlength="10"/>#}
+{#                    <label for="{{ form.senha.id_for_label }}">{{ form.senha.label }}</label>#}
+{#                </div>#}
+{#                <div class="input-field col s12">#}
+{#                    {{ form.id_cidade }}#}
+{#                    <label for="{{ form.id_cidade.id_for_label }}">Selecione a cidade</label>#}
+{#                </div>#}
+{#                <div class="input-field col s12 m6 validate">#}
+{#                    {{ form.tipo }}#}
+{#                    <label for="{{ form.tipo.id_for_label }}">{{ form.tipo.label }}</label>#}
+{#                </div>#}
+{#                <div class="fixed-action-btn" style="bottom: 4%; right: 8%;">#}
+{#                    <button type="submit" name="action" class="btn-floating btn-large waves-effect waves-light light-blue#}
+{#                                  lighten-1 save" title="Cadastrar participante">#}
+{#                      <i class="large material-icons">save</i>#}
+{#                    </button>#}
+{#                </div>#}
+{#        </fieldset>#}
+{#    </form>#}
+{##}
+{#    </div>#}
+{% endblock content %}

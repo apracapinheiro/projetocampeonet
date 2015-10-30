@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Bem vindo ao site CampeoNET{% endblock %}
+{% block head %}Bem vido ao site CampeoNET {% endblock %}
+
+{% block content %}
+        {% if user.username %}
+            <p>Bem vindo {{ user.username }}! Você já pode realizar o seu palpite para
+            o próximo GP.</p>
+        {% else %}
+            <p>Bem vindo visitante. Para realizar um palpite e necessario realizar o
+            login. Clique <a href="/login/">aqui</a>.</p>
+        {% endif %}
+{% endblock %}
