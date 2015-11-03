@@ -90,3 +90,13 @@ class ListaResultado(ListView):
     def get_context_data(self, **kwargs):
         context = super(ListaResultado, self).get_context_data(**kwargs)
         return context
+
+
+class ListaParticipantes(ListView):
+    template_name = 'participantes.html'
+    model = Palpite
+    # context_object_name = 'lista_gp'
+
+    def get_queryset(self):
+        queryset = Palpite.objects.all().filter(id_calendarioGP__ativo=1)
+        return queryset

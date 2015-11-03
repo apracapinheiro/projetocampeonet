@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+<h4>Lista de participantes</h4>
+<fieldset class="z-depth-1">
+    <table class="striped">
+      <tr>
+        <th>Nome<br></th>
+        <th>Data do cadastro</th>
+        <th>Visualizar palpite atual</th>
+      </tr>
+        {% for palpite in object_list %}
+            <tr>
+                <td>{{ palpite.participante }}</td>
+                <td>{{ palpite.participante.criado_em }}</td>
+                <td>
+                      <a href="{% url 'palpite-participante' palpite.id %}" title="Clique para visualizar o palpite">
+                          <i class="tiny material-icons ">description</i>
+                      </a>
+                  </td>
+            </tr>
+{#            {% if calendariogp.ativo == 1 %}#}
+{#            {% endif %}#}
+        {% endfor %}
+    </table>
+</fieldset>
+
+{% endblock %}
+

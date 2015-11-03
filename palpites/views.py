@@ -48,6 +48,17 @@ class ListaPalpites(ListView):
         return queryset
 
 
+class ListaPalpiteParticipante(ListView):
+    template_name = 'palpite-participante.html'
+    model = Palpite
+    # context_object_name = 'lista_gp'
+
+    def get_queryset(self):
+        palpite_id = self.kwargs['pk']
+        queryset = Palpite.objects.filter(id=palpite_id)
+        return queryset
+
+
 
 # class CalculaPontuacao(ListView):
 #     template_name = 'pontuacao.html'
