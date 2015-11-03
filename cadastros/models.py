@@ -10,6 +10,11 @@ CHOICES_TIPO = (
     ('U', 'Usuário'),
 )
 
+CHOICES_ATIVO =(
+    ('0', 'INATIVO'),
+    ('1', 'ATIVO'),
+)
+
 
 
 class Equipe(models.Model):

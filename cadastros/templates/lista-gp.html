@@ -1,18 +1,27 @@
 {% extends 'base.html' %}
 {% block content %}
 <h4>Lista de GPs</h4>
-{#<fieldset class="z-depth-1">#}
-    {% for calendariogp in calendariogp_list %}
-
-        {% if calendariogp.ativo == 1 %}
-            Ativo
-            {{ calendariogp.dataGP }}
-        {% else %}
-            <br>
-            Inativos
-            <p>{{ calendariogp.dataGP }}
-        {% endif %}
-    {% endfor %}
-{#</fieldset>#}
+<fieldset class="z-depth-1">
+    <table>
+      <tr>
+        <th>GP<br></th>
+        <th>Data</th>
+        <th>Status</th>
+      </tr>
+        {% for calendariogp in object_list %}
+            <tr>
+                <td>{{ calendariogp.id_gp.nomeGP }}</td>
+                <td>{{ calendariogp.dataGP }}</td>
+                    {% if calendariogp.ativo %}
+                    <td>ATIVO</td>
+                    {% else %}
+                    <td>INATIVO</td>
+                    {% endif %}
+            </tr>
+{#            {% if calendariogp.ativo == 1 %}#}
+{#            {% endif %}#}
+        {% endfor %}
+    </table>
+</fieldset>
 
 {% endblock %}

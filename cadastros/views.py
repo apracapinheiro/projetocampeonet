@@ -43,6 +43,10 @@ class ListaGP(ListView):
     model = CalendarioGP
     # context_object_name = 'lista_gp'
 
+    def get_queryset(self):
+        queryset = CalendarioGP.objects.all().order_by('-ativo', '-dataGP')
+        return queryset
+
 
     # if request.method == 'POST':
     #     form = RegistrationForm(request.POST)
