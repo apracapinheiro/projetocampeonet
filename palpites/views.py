@@ -38,6 +38,17 @@ class CadastroPalpite(CreateView):
     # fields = '__all__'
 
 
+class ListaPalpites(ListView):
+    template_name = 'lista-palpites-geral.html'
+    model = Palpite
+    # context_object_name = 'lista_gp'
+
+    def get_queryset(self):
+        queryset = Palpite.objects.all().filter(id_calendarioGP__ativo=1)
+        return queryset
+
+
+
 # class CalculaPontuacao(ListView):
 #     template_name = 'pontuacao.html'
 #
