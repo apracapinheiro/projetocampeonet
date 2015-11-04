@@ -5,13 +5,13 @@
     <table class="striped">
       <tr>
         <th>Nome<br></th>
-        <th>Data do cadastro</th>
+        <th>Data do palpite</th>
         <th>Visualizar palpite atual</th>
       </tr>
         {% for palpite in object_list %}
             <tr>
                 <td>{{ palpite.participante }}</td>
-                <td>{{ palpite.participante.criado_em }}</td>
+                <td>{{ palpite.data_palpite }}</td>
                 <td>
                       <a href="{% url 'palpite-participante' palpite.id %}" title="Clique para visualizar o palpite">
                           <i class="tiny material-icons ">description</i>

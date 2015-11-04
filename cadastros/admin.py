@@ -64,7 +64,7 @@ class PilotoAdmin(admin.ModelAdmin):
 
 
 class EquipePilotoAdmin(admin.ModelAdmin):
-    list_display =('id_equipe', 'id_piloto1', 'id_piloto2')
+    list_display =('id_equipe', 'id_piloto1', 'id_piloto2', 'ano')
 
 
 

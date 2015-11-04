@@ -41,7 +41,7 @@ class EquipePiloto(models.Model):
     id_equipe = models.ForeignKey('Equipe', related_name='id_equipe', verbose_name='Equipe')
     id_piloto1 = models.ForeignKey('Piloto', related_name='id_piloto1', verbose_name='Primeiro Piloto', null=True, blank=True)
     id_piloto2 = models.ForeignKey('Piloto', related_name='id_piloto2', verbose_name='Segundo Piloto', null=True, blank=True)
-    ano = models.DateField(verbose_name="Ano da equipe", unique_for_year=True)
+    ano = models.DateField(verbose_name="Ano da equipe", unique=True, null=True)
 
     def __unicode__(self):
         return str(self.id_equipe)
