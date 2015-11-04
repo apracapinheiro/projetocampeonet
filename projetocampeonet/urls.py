@@ -2,6 +2,7 @@ from django.conf.urls import *
 from django.contrib import admin
 
 from django.contrib.auth.views import *
+from django.views.generic import TemplateView
 from cadastros.views import *
 from palpites.views import *
 
@@ -13,7 +14,7 @@ urlpatterns = patterns('',
                        url(r'^admin/', include(admin.site.urls)),
                        # url(r'^pontuacao/$', CalculaPontuacao.as_view(), name='pontuacao'),
                        # url(r'^palpite/$', PalpiteView.as_view()),
-                       url(r'^login/$', 'django.contrib.auth.views.login'),
+                       url(r'^login/$', 'django.contrib.auth.views.login', name='login'),
                        url(r'^logout/$', logout_page),
                        
                        url(r'^user/password/reset/$',
@@ -27,11 +28,12 @@ urlpatterns = patterns('',
                            {'post_reset_redirect' : '/user/password/done/'}),
                        url(r'^user/password/done/$',
                            'django.contrib.auth.views.password_reset_complete'),
+                       url(r'^galeria/$', TemplateView.as_view(template_name="galeria.html"), name='galeria'), #direciona direto para uma pagina
                        url(r'^', include('palpites.urls')),
                        url(r'^', include('cadastros.urls')),
+
                        # url(r'^logout/$', 'django.contrib.auth.views.logout'),
 )
-
 
 
 
