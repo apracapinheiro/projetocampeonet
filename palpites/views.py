@@ -7,6 +7,7 @@ from django.template import RequestContext
 from django.views.generic import View, CreateView, ListView
 from palpites.forms import *
 from forms import FormPalpite
+from palpites.models import Palpite as Teste
 from palpites.models import *
 
 
@@ -23,6 +24,9 @@ class Index(View):
         paramns = {}
         paramns["name"] = "CampeoNET"
         return render(request, 'main_page.html', paramns)
+
+def sucesso_page(request):
+    return render_to_response('sucesso.html', context_instance=RequestContext(request))
 
 
 def logout_page(request):
@@ -58,12 +62,11 @@ class ListaPalpites(ListView):
 
 class ListaPalpiteParticipante(ListView):
     template_name = 'palpite-participante.html'
-    model = Palpite
-    # context_object_name = 'lista_gp'
+    model = Teste
 
     def get_queryset(self):
-        palpite_id = self.kwargs['pk']
-        queryset = Palpite.objects.filter(id=palpite_id)
+        palpite_id = int(self.kwargs['pk'])
+        queryset = Teste.objects.filter(id=palpite_id)
         return queryset
 
 
@@ -72,7 +75,7 @@ def cria_palpite(request):
     form = PalpiteForm(request.POST or None, user=request.user, ativo=1)
     if form.is_valid():
         form.save()
-        return redirect('index')
+        return redirect('sucesso')
 
     return render(request, "cadastro_palpite_old.html", {'form': form})
 

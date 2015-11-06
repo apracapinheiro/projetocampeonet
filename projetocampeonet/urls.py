@@ -16,6 +16,7 @@ urlpatterns = patterns('',
                        # url(r'^palpite/$', PalpiteView.as_view()),
                        url(r'^login/$', 'django.contrib.auth.views.login', name='login'),
                        url(r'^logout/$', logout_page),
+                       url(r'^sucesso/$', sucesso_page, name='sucesso'),
                        
                        url(r'^user/password/reset/$',
                            'django.contrib.auth.views.password_reset',

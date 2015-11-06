@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Palpite realizado com sucesso{% endblock %}
+{% block head %}Palpite realizado com sucesso {% endblock %}
+
+{% block content %}
+
+        {% if user.username %}
+            <h4>Boa sorte {{ user.username }}! O seu palpite para
+            o próximo GP foi realizado com sucesso!</h4>
+        {% else %}
+            <p>Bem vindo visitante. Para realizar um palpite e necessario realizar o
+            login. Clique <a href="{% url 'login' %}">aqui</a>.</p>
+        {% endif %}
+
+{% endblock %}
