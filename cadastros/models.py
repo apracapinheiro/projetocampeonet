@@ -2,6 +2,7 @@
 
 from django.db import models
 from django import forms
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -55,24 +56,32 @@ class Cidade(models.Model):
         return self.nome_cidade
 
 
-class Participante(models.Model):
-    nome = models.CharField(max_length=50, verbose_name="Nome do participante")
+# class Pessoa(models.Model):
+#     class Meta:
+#         abstract = True
+#
+#     nome = models.CharField(max_length=100)
+#     data_nascimento = models.DateField()
+#     endereco = models.CharField(max_length=100)
+#
+# class Cliente(Pessoa):
+#     compra_sempre = models.BooleanField(default=False)
+
+
+
+class Participante(User):
     endereco = models.CharField(max_length=100, verbose_name="Endereço")
     telefone = models.CharField(max_length=15, blank=True, verbose_name="Telefone")
     id_cidade = models.ForeignKey('Cidade', related_name='id_cidade', verbose_name='Cidade')
-    email = models.EmailField(max_length=60, unique=True, verbose_name="E-mail")
-    tipo = models.CharField(max_length=1, choices=CHOICES_TIPO, verbose_name="Tipo usuário")
-    login = models.CharField(max_length=15, unique=True, verbose_name="Login")
-    senha = models.CharField(max_length=10, verbose_name="Senha")
-    criado_em = models.DateTimeField(auto_now=True, verbose_name="Data criação cadastro")
 
     class Meta:
-        ordering = ['nome']
         verbose_name = 'Participante'
         verbose_name_plural = 'Participantes'
 
-    def __str__(self):
-        return self.nome
+    def __unicode__(self):
+        # return "{0} - {1}".format(self.first_name, self.last_name)
+        return '%s %s' % (self.first_name, self.last_name)
+        # return self.first_name
 
 
 class Calendario(models.Model):

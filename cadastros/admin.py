@@ -5,14 +5,9 @@ from projetocampeonet import settings
 
 class ParticipanteAdmin(admin.ModelAdmin):
     list_display = (
-        'nome',
-        'login',
-        'senha',
-        'endereco',
-        'telefone',
-        'email',
-        'tipo',
-        'criado_em',
+        'first_name',
+        'username',
+        'is_staff',
     )
 
 

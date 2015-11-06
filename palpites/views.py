@@ -1,8 +1,8 @@
 # coding=utf-8
 from django.contrib.auth import logout
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse_lazy, reverse
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.views.generic import View, CreateView, ListView
 from palpites.forms import *
@@ -38,6 +38,14 @@ class CadastroPalpite(CreateView):
     # fields = '__all__'
 
 
+class Palpite(CreateView):
+    template_name = 'cadastro_palpite_old.html'
+    # model = Palpite
+    success_url = reverse_lazy('cadastro_palpite_old')
+    form = PalpiteForm
+    exclude = ['participante',]
+
+
 class ListaPalpites(ListView):
     template_name = 'lista-palpites-geral.html'
     model = Palpite
@@ -57,6 +65,18 @@ class ListaPalpiteParticipante(ListView):
         palpite_id = self.kwargs['pk']
         queryset = Palpite.objects.filter(id=palpite_id)
         return queryset
+
+
+def cria_palpite(request):
+    # Formulário enviado
+    form = PalpiteForm(request.POST or None, user=request.user, ativo=1)
+    if form.is_valid():
+        form.save()
+        return redirect('index')
+
+    return render(request, "cadastro_palpite_old.html", {'form': form})
+
+
 
 
 

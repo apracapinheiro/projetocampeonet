@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+
+{% block content %}
+<div class="container">
+    <h2>Palpites para o GP</h2>
+    <fieldset class="z-depth-1">
+        <form action="{% url 'cadastro_palpite2' %}" method="post">{% csrf_token %}
+
+{#            <input type="hidden" id="{{ form.participante.id_for_label }}" name="{{ form.participante.id_for_label }}" value="{{ user.id }}">#}
+{#            <label>{{ form.participante.label }}</label> {{ user.first_name }} {{ user.last_name }}#}
+            <p>
+            <label for="{{ form.participante.id_for_label }}">{{ form.participante.label }}</label>
+                   {{ form.participante }}
+            <p>
+            <label for="{{ form.id_calendarioGP.id_for_label }}">{{ form.id_calendarioGP.label }}</label>
+                   {{ form.id_calendarioGP }}
+            <p>
+             <label for="{{ form.data_palpite.id_for_label }}">{{ form.data_palpite.label }}</label>
+                    {{ form.data_palpite }}
+
+            <label for="{{ form.palp_pole.id_for_label }}">{{ form.palp_pole.label }}</label>
+                    {{ form.palp_pole }}
+            <p>
+            <label for="{{ form.palp_segLarg.id_for_label }}">{{ form.palp_segLarg.label }}</label>
+                    {{ form.palp_segLarg }}
+            <p>
+            <label for="{{ form.palp_tercLarg.id_for_label }}">{{ form.palp_tercLarg.label }}</label>
+                    {{ form.palp_tercLarg }}
+            <p>
+            <label for="{{ form.palp_quaLarg.id_for_label }}">{{ form.palp_quaLarg.label }}</label>
+                    {{ form.palp_quaLarg }}
+            <p>
+            <label for="{{ form.palp_quinLarg.id_for_label }}">{{ form.palp_quinLarg.label }}</label>
+                    {{ form.palp_quinLarg }}
+            <p>
+            <label for="{{ form.palp_vencedor.id_for_label }}">{{ form.palp_vencedor.label }}</label>
+                    {{ form.palp_vencedor }}
+            <p>
+            <label for="{{ form.palp_vegLug.id_for_label }}">{{ form.palp_vegLug.label }}</label>
+                    {{ form.palp_vegLug }}
+            <p>
+            <label for="{{ form.palp_tercLug.id_for_label }}">{{ form.palp_tercLug.label }}</label>
+                    {{ form.palp_tercLug }}
+            <p>
+            <label for="{{ form.palp_quaLug.id_for_label }}">{{ form.palp_quaLug.label }}</label>
+                    {{ form.palp_quaLug }}
+            <p>
+            <label for="{{ form.palp_quinLug.id_for_label }}">{{ form.palp_quinLug.label }}</label>
+                    {{ form.palp_quinLug }}
+            <p>
+            <label for="{{ form.palp_sexLug.id_for_label }}">{{ form.palp_sexLug.label }}</label>
+                    {{ form.palp_sexLug }}
+            <p>
+            <label for="{{ form.palp_setLug.id_for_label }}">{{ form.palp_setLug.label }}</label>
+                    {{ form.palp_setLug }}
+            <p>
+            <label for="{{ form.palp_oitLug.id_for_label }}">{{ form.palp_oitLug.label }}</label>
+                    {{ form.palp_oitLug }}
+            <p>
+            <label for="{{ form.palp_nonLug.id_for_label }}">{{ form.palp_nonLug.label }}</label>
+                    {{ form.palp_nonLug }}
+            <p>
+            <label for="{{ form.palp_decLug.id_for_label }}">{{ form.palp_decLug.label }}</label>
+                    {{ form.palp_decLug }}
+            <p>
+            <label for="{{ form.palp_volta.id_for_label }}">{{ form.palp_volta.label }}</label>
+                    {{ form.palp_volta }}
+            <p>
+            <label for="{{ form.comentario.id_for_label }}">{{ form.comentario.label }}</label>
+                    {{ form.comentario }}
+
+
+
+
+
+            <div class="fixed-action-btn" style="bottom: 4%; right: 8%;">
+                    <button type="submit" name="action" class="btn-floating btn-large waves-effect waves-light light-blue
+                                  lighten-1 save" title="Cadastrar palpite">
+        {#                <input type="submit" value="Create" />#}
+                        <i class="large material-icons">save</i>
+                    </button>
+            </div>
+        </form>
+    </fieldset>
+</div>
+
+{% endblock content %}

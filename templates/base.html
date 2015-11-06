@@ -35,7 +35,7 @@
                     <ul id="nav-mobile" class="left hide-on-med-and-down">
                        <li><a href="/" class="brand-logo center">CampeoNet</a></li>
                                 {% if user.is_authenticated %}
-                                        Bem vindo {{ user.username }}
+                                        Bem vindo {{ user.first_name }} {{ user.last_name }}
                        <li>             <a href="/logout">Logout</a></li>
                        <li>         <a class="dropdown-button" href="#!" data-activates="drop-palpites">Palpites<i class="material-icons right">arrow_drop_down</i></a></li>
 
