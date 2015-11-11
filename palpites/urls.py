@@ -1,13 +1,13 @@
 from django.conf.urls import patterns, url
+from django.contrib.auth.decorators import login_required
 from cadastros.views import ListaPalpite, ListaResultado
 from palpites.views import CadastroPalpite, Index, ListaPalpites, ListaPalpiteParticipante
 
 urlpatterns = patterns('',
                        url(r'^$', Index.as_view(), name='index'),
-                       url(r'^palpite/$', CadastroPalpite.as_view(), name='cadastro_palpite'),
+                       # url(r'^palpite/$', CadastroPalpite.as_view(), name='cadastro_palpite'),
                        # url(r'^create-supervisor/$', 'TasksManager.views.create_supervisor', name="create_supervisor"),
-                       url(r'^palpite2/$', 'palpites.views.cria_palpite', name='cadastro_palpite2'),
-                       # url(r'^palpite2/$', Palpite.as_view(), name='cadastro_palpite2'),
+                       url(r'^palpite/$', 'palpites.views.cria_palpite', name='cadastro_palpite'),
                        url(r'^lista-palpite/$', ListaPalpite.as_view(), name='lista_palpite'),
                        url(r'^resultado-prova/$', ListaResultado.as_view(), name='resultado_prova'),
                        url(r'^palpites-geral/$', ListaPalpites.as_view(), name='palpites-geral'),

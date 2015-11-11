@@ -108,6 +108,7 @@ class CalendarioGP(models.Model):
     id_calendario = models.ForeignKey('Calendario', related_name='id_calendario', verbose_name='Ano')
     id_gp = models.ForeignKey('Gp', related_name='id_gp', verbose_name='Grande Premio')
     dataGP = models.DateField(verbose_name='Data do GP')
+    posicao_bonus = models.IntegerField(verbose_name='Posicao bonificada na chegada', blank=True, null=True)
     ativo = models.BooleanField(verbose_name='Ativo/Inativo?', default=None)
 
     def __unicode__(self):

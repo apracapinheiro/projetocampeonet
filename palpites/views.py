@@ -1,14 +1,16 @@
 # coding=utf-8
 from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.views.generic import View, CreateView, ListView
+from cadastros.models import CalendarioGP
 from palpites.forms import CadastroPalpiteForm, PalpiteForm, FormGerarPontos
 from forms import FormPalpite
 # from palpites.models import Palpite as Lista
-from palpites.models import Palpite, ResultadoProva, Pontuacao
+from palpites.models import Palpite, ResultadoProva, Pontuacao, Pontos
 
 
 class PalpiteView(View):
@@ -79,78 +81,52 @@ def cria_palpite(request):
 
     return render(request, "cadastro_palpite_old.html", {'form': form})
 
-
-
-
-
-# class CalculaPontuacao(ListView):
-#     template_name = 'pontuacao.html'
-#
-#     resultado = ResultadoProva.objects.all().values_list('polePosition','segundoLargada','terceiroLargada',
-#                                                          'quartoLargada', 'quintoLargada', 'vencedor',
-#                                                          'segundoLugar','terceiroLugar','quartoLugar',
-#                                                          'quintoLugar','sextoLugar','setimoLugar',
-#                                                          'oitavoLugar','nonoLugar','decimoLugar',
-#                                                          'voltaRapida')
-#
-#     palp2 = Palpite.objects.all().filter(id=2).values_list('palp_pole', 'palp_segLarg','palp_tercLarg',
-#                                                            'palp_quaLarg', 'palp_quinLarg', 'palp_vencedor',
-#                                                            'palp_vegLug', 'palp_tercLug', 'palp_quaLug',
-#                                                            'palp_quinLug', 'palp_sexLug', 'palp_setLug',
-#                                                            'palp_oitLug', 'palp_nonLug', 'palp_decLug',
-#                                                            'palp_volta')
-#
-#     for indice_p, valor_p in enumerate(palp2):
-#         if valor_p == resultado.__getitem__(indice_p):
-#             indice_igual = "OK"
-#         else:
-#             indice_igual = "NAO"
-#
-#     def get_context_data(self, **kwargs):
-#         context = super(CalculaPontuacao, self).get_context_data(**kwargs)
-#         return context
-
-
+@login_required(login_url='/login/')
 def CalculaPontuacao(request):
+
+    GP = CalendarioGP.objects.filter(ativo=1).values_list('id', 'posicao_bonus') # busca prova que está com o status ativo
+
+    idGP = GP[0][0] # id do GP ativo
+    bonus = GP[0][1] # posicao bonificada da prova
     form = FormGerarPontos()
 
-    resultado = ResultadoProva.objects.filter(id_calendarioGP=8).values_list('polePosition', 'segundoLargada',
+    resultado = ResultadoProva.objects.filter(id_calendarioGP=idGP).values_list('polePosition', 'segundoLargada',
                                                             'terceiroLargada', 'quartoLargada', 'quintoLargada',
                                                             'vencedor', 'segundoLugar', 'terceiroLugar', 'quartoLugar',
                                                             'quintoLugar', 'sextoLugar', 'setimoLugar', 'oitavoLugar',
                                                              'nonoLugar', 'decimoLugar', 'voltaRapida')
 
-    palpites = Palpite.objects.all().filter(id_calendarioGP=8).values_list('palp_pole', 'palp_segLarg',
+    palpites = Palpite.objects.all().filter(id_calendarioGP=idGP).values_list('palp_pole', 'palp_segLarg',
                                                             'palp_tercLarg', 'palp_quaLarg', 'palp_quinLarg',
                                                             'palp_vencedor', 'palp_vegLug', 'palp_tercLug',
                                                             'palp_quaLug', 'palp_quinLug', 'palp_sexLug', 'palp_setLug',
                                                             'palp_oitLug', 'palp_nonLug', 'palp_decLug', 'palp_volta', 'id')
 
+    pontos = Pontos.objects.all().values_list('pole', 'segLarg', 'tercLarg', 'quaLarg', 'quinLarg',
+                                                            'vencedor', 'vegLug', 'tercLug',
+                                                            'quaLug', 'quinLug', 'sexLug', 'setLug',
+                                                            'oitLug', 'nonLug', 'decLug', 'volta', 'bonus')
 
     pontuacao = []
 
-
-
-
-
-
     for listapalpites in palpites:
         count = 0
-        # print '\n nova lista'
+        total = 0
         for item in listapalpites:
             if count < 16:
                 if item == resultado[0][count]:
-                    # print 'ponto'
-                    pontuacao.insert(count, '10')
+                    pontuacao.insert(count, pontos[0][count])
+                    total = total + pontos[0][count]
+                    if bonus == count-4: # se a posicao bonificada tiver acerto no palpite, é feito o somatorio
+                        total = total + pontos[0][16] # a pontuacao do bonus é a ultima posicao do objeto pontos
                 else:
                     pontuacao.insert(count, '0')
-                    # print 'erro'
                 count += 1
             else:
                 count = 0
 
+        id_palpite_participante = Palpite.objects.get(id=listapalpites[16]) #cria objeto palpite para poder inserir o id na tabela pontuacao
 
-        id_palpite_participante = Palpite.objects.get(id=listapalpites[16])
         pontos_participante = Pontuacao.objects.create(id_palpite=id_palpite_participante,
                                                        pole=pontuacao[0],
                                                        segLarg=pontuacao[1],
@@ -168,8 +144,8 @@ def CalculaPontuacao(request):
                                                        nonLug=pontuacao[13],
                                                        decLug=pontuacao[14],
                                                        volta=pontuacao[15],
-                                                       bonus=10,
-                                                       total=100
+                                                       bonus=bonus,
+                                                       total=total
                                                        )
         pontos_participante.save()
 
