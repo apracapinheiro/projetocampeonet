@@ -7,10 +7,10 @@ from django.template import RequestContext
 from django.views.generic import CreateView, ListView
 from django.core.urlresolvers import reverse_lazy
 
-from cadastros.forms import *
-from cadastros.models import *
-from palpites.models import *
-from palpites.forms import *
+from cadastros.forms import CadastroParticipante, RegistrationForm
+from cadastros.models import Participante, CalendarioGP
+from palpites.models import ResultadoProva, Palpite
+from palpites.forms import FormGerarPontos
 
 
 class Criar(CreateView):

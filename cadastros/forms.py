@@ -4,7 +4,7 @@ import re
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import CreateView
-from cadastros.models import *
+from cadastros.models import Participante, Cidade
 
 
 class RegistrationForm(forms.Form):

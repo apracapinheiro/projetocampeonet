@@ -5,10 +5,10 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.views.generic import View, CreateView, ListView
-from palpites.forms import *
+from palpites.forms import CadastroPalpiteForm, PalpiteForm, FormGerarPontos
 from forms import FormPalpite
-from palpites.models import Palpite as Teste
-from palpites.models import *
+# from palpites.models import Palpite as Lista
+from palpites.models import Palpite, ResultadoProva, Pontuacao
 
 
 class PalpiteView(View):
@@ -42,12 +42,12 @@ class CadastroPalpite(CreateView):
     # fields = '__all__'
 
 
-class Palpite(CreateView):
-    template_name = 'cadastro_palpite_old.html'
-    # model = Palpite
-    success_url = reverse_lazy('cadastro_palpite_old')
-    form = PalpiteForm
-    exclude = ['participante',]
+# class Palpite(CreateView):
+#     template_name = 'cadastro_palpite_old.html'
+#     # model = Palpite
+#     success_url = reverse_lazy('cadastro_palpite_old')
+#     form = PalpiteForm
+#     exclude = ['participante',]
 
 
 class ListaPalpites(ListView):
@@ -62,11 +62,11 @@ class ListaPalpites(ListView):
 
 class ListaPalpiteParticipante(ListView):
     template_name = 'palpite-participante.html'
-    model = Teste
+    model = Palpite
 
     def get_queryset(self):
         palpite_id = int(self.kwargs['pk'])
-        queryset = Teste.objects.filter(id=palpite_id)
+        queryset = Palpite.objects.filter(id=palpite_id)
         return queryset
 
 
@@ -114,27 +114,70 @@ def cria_palpite(request):
 def CalculaPontuacao(request):
     form = FormGerarPontos()
 
-    resultado = ResultadoProva.filter(id_calendarioGP=6).values_list('polePosition', 'segundoLargada',
+    resultado = ResultadoProva.objects.filter(id_calendarioGP=8).values_list('polePosition', 'segundoLargada',
                                                             'terceiroLargada', 'quartoLargada', 'quintoLargada',
                                                             'vencedor', 'segundoLugar', 'terceiroLugar', 'quartoLugar',
                                                             'quintoLugar', 'sextoLugar', 'setimoLugar', 'oitavoLugar',
                                                              'nonoLugar', 'decimoLugar', 'voltaRapida')
 
-    palp2 = Palpite.objects.all().filter(id_calendarioGP=6).values_list('palp_pole', 'palp_segLarg',
+    palpites = Palpite.objects.all().filter(id_calendarioGP=8).values_list('palp_pole', 'palp_segLarg',
                                                             'palp_tercLarg', 'palp_quaLarg', 'palp_quinLarg',
                                                             'palp_vencedor', 'palp_vegLug', 'palp_tercLug',
                                                             'palp_quaLug', 'palp_quinLug', 'palp_sexLug', 'palp_setLug',
-                                                            'palp_oitLug', 'palp_nonLug', 'palp_decLug', 'palp_volta')
+                                                            'palp_oitLug', 'palp_nonLug', 'palp_decLug', 'palp_volta', 'id')
 
-    for indice_p, valor_p in enumerate(palp2):
-        if valor_p == resultado.__getitem__(indice_p):
-            indice_igual = "OK"
-        else:
-            indice_igual = "NAO"
 
-    def get_context_data(self, **kwargs):
-        context = super(CalculaPontuacao, self).get_context_data(**kwargs)
-        return context
+    pontuacao = []
+
+
+
+
+
+
+    for listapalpites in palpites:
+        count = 0
+        # print '\n nova lista'
+        for item in listapalpites:
+            if count < 16:
+                if item == resultado[0][count]:
+                    # print 'ponto'
+                    pontuacao.insert(count, '10')
+                else:
+                    pontuacao.insert(count, '0')
+                    # print 'erro'
+                count += 1
+            else:
+                count = 0
+
+
+        id_palpite_participante = Palpite.objects.get(id=listapalpites[16])
+        pontos_participante = Pontuacao.objects.create(id_palpite=id_palpite_participante,
+                                                       pole=pontuacao[0],
+                                                       segLarg=pontuacao[1],
+                                                       tercLarg=pontuacao[2],
+                                                       quaLarg=pontuacao[3],
+                                                       quinLarg=pontuacao[4],
+                                                       vencedor=pontuacao[5],
+                                                       segLug=pontuacao[6],
+                                                       tercLug=pontuacao[7],
+                                                       quaLug=pontuacao[8],
+                                                       quinLug=pontuacao[9],
+                                                       sexLug=pontuacao[10],
+                                                       setLug=pontuacao[11],
+                                                       oitLug=pontuacao[12],
+                                                       nonLug=pontuacao[13],
+                                                       decLug=pontuacao[14],
+                                                       volta=pontuacao[15],
+                                                       bonus=10,
+                                                       total=100
+                                                       )
+        pontos_participante.save()
+
+        # print pontuacao
+
+        pontuacao = []
+
+    return render(request, 'pontos.html')
 
 
 

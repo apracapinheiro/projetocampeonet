@@ -1,9 +1,9 @@
-from django.conf.urls import *
+from django.conf.urls import url, patterns, include
 from django.contrib import admin
 
 
-from cadastros.views import *
-from palpites.views import *
+from cadastros.views import Criar, register_page, ListaGP, ListaParticipantes
+from palpites.views import Index
 from django.views.generic import TemplateView
 
 

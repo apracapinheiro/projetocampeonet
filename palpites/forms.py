@@ -4,7 +4,7 @@ import user
 from cadastros.models import CalendarioGP
 from django import forms
 from palpites.models import Palpite
-from cadastros.models import *
+from cadastros.models import Piloto, Participante
 
 
 class FormPalpite(forms.Form):
@@ -32,10 +32,7 @@ class CadastroPalpiteForm(forms.ModelForm):
 
 class PalpiteForm(forms.ModelForm):
     query_pilotos = Piloto.objects.all()
-    # usuario = User.
 
-    # participante = forms.ChoiceField(label='Participante')
-    # participante = forms.ModelChoiceField(label='Participante', queryset=Participante.objects.all())
     participante = forms.ModelChoiceField(label='Participante', queryset=Participante.objects)
     id_calendarioGP = forms.ModelChoiceField(label='GP Atual', queryset=CalendarioGP.objects)
     data_palpite = forms.DateTimeField(label='Data do palpite', widget=forms.DateTimeInput())
@@ -56,9 +53,6 @@ class PalpiteForm(forms.ModelForm):
     palp_decLug = forms.ModelChoiceField(label='Decimo colocado', queryset=query_pilotos)
     palp_volta = forms.ModelChoiceField(label='Volta rapida', queryset=query_pilotos)
     comentario = forms.CharField(label='Comentario', max_length=500, widget=forms.Textarea())
-    # participante = forms.CharField(label='Participante')#, widget=forms.TextInput(attrs={'readonly':'readonly'}))
-    # data_palpite = forms.DateTimeField(widget=forms.TextInput(attrs={'readonly':'readonly'}))
-    # id_cidade = forms.ModelChoiceField(label='Cidade', queryset=Cidade.objects.all())
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
@@ -72,14 +66,10 @@ class PalpiteForm(forms.ModelForm):
             self.fields['id_calendarioGP'].queryset = CalendarioGP.objects.filter(ativo=1)
             self.fields['id_calendarioGP'].initial = self.id_calendarioGP
 
-    def clean(self):
-        cleaned_data = super(PalpiteForm, self).clean()
-        participante = self.cleaned_data.get('participante')
-        id_calendarioGP = self.cleaned_data.get('id_calendarioGP')
-        data_palpite = self.cleaned_data.get('data_palpite')
-        palp_pole = self.cleaned_data.get('palp_pole')
-
-        return self.cleaned_data
+    # def clean(self):
+    #     cleaned_data = super(PalpiteForm, self).clean()
+    #
+    #     return self.cleaned_data
 
     class Meta:
         model = Palpite
