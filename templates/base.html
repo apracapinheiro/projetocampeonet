@@ -101,8 +101,7 @@
 {#        <div class="parallax-container">#}
 {#            <div class="parallax"><img src="{% static 'images/f1-sparks.jpg' %}"></div>#}
 {#        </div>#}
-        {% block js %}
-        {% endblock %}
+
 
 
      <footer class="page-footer amber darken-2">
@@ -141,38 +140,28 @@
         </div>
      </footer>
 
-    <!--  Scripts-->
-      <script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
-      <script src="{% static 'js/materialize.js' %}"></script>
-      <script src="{% static 'js/init.js' %}"></script>
-      <script>$(document).ready(function() {
-        $('select').material_select();
-      });
-      </script>
-      <script> $('.datepicker').pickadate({
-        selectMonths: true, // Creates a dropdown to control month
-        selectYears: 15 // Creates a dropdown of 15 years to control year
-      });
-      </script>
-        <script>$(document).ready(function() {
-        $('input#input_text, textarea#textarea1').characterCounter();
-      });
-      </script>
-      <script>
-        $(".dropdown-button").dropdown({ hover: true });
-      </script>
-      <script>
-            $(document).ready(function(){
-              $('.parallax').parallax();
-            });
-      </script>
-      <script>
-           $(document).ready(function(){
+        <!--  Scripts-->
+        <script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
+        <script src="{% static 'js/materialize.js' %}"></script>
+        <script src="{% static 'js/init.js' %}"></script>
+        <script>
+            $(document).ready(function () {
+                $('select').material_select();
+                $('input#input_text, textarea#textarea1').characterCounter();
+                $('.parallax').parallax();
                 $('.slider').slider({full_width: true});
             });
-      </script>
 
+            $('.datepicker').pickadate({
+                selectMonths: true, // Creates a dropdown to control month
+                selectYears: 15 // Creates a dropdown of 15 years to control year
+            });
 
+            $(".dropdown-button").dropdown({hover: true});
+        </script>
+
+        {% block js %}
+        {% endblock %}
     </body>
 </html>
 

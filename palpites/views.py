@@ -1,12 +1,14 @@
 # coding=utf-8
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse_lazy, reverse
+from django.db.models.aggregates import Sum
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.views.generic import View, CreateView, ListView
-from cadastros.models import CalendarioGP
+from cadastros.models import CalendarioGP, Participante
 from palpites.forms import CadastroPalpiteForm, PalpiteForm, FormGerarPontos
 from forms import FormPalpite
 # from palpites.models import Palpite as Lista
@@ -60,6 +62,23 @@ class ListaPalpites(ListView):
     def get_queryset(self):
         queryset = Palpite.objects.all().filter(id_calendarioGP__ativo=1)
         return queryset
+
+
+class ListaPontuacao(ListView):
+    template_name = 'pontuacao.html'
+    model = Participante
+
+    def get_context_data(self, **kwargs):
+        context = super(ListaPontuacao, self).get_context_data(**kwargs)
+        calendarios_gp = CalendarioGP.objects.all().order_by('dataGP')
+        # ObjPontuacao = Pontuacao.objects.annotate(somatorio=Sum('total'))
+        # context['total_geral'] = ObjPontuacao
+        context['calendarios'] = calendarios_gp
+        return context
+
+    def get_queryset(self):
+        qs = super(ListaPontuacao, self).get_queryset()
+        return qs
 
 
 class ListaPalpiteParticipante(ListView):

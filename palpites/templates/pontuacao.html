@@ -1,17 +1,50 @@
 {% extends 'base.html' %}
+{% load campeotag %}
 {% block content %}
-{#    {% for calculapontucao in calculapontuacao_list %}#}
-{#                            <tr>#}
-{#                                <td>{{ resultadoprova.id_calendarioGP }}</td>#}
-{#                                <td>{{ resultadoprova.polePosition }}</td>#}
-{#                                <td>{{ calculapontucao.all }}</td>#}
-{#                            </tr>#}
-{#                        {% empty %}#}
-{#                            <tr>#}
-{#                                <td>Sem palpites.</td>#}
-{#                            </tr>#}
-{#                        {% endfor %}#}
 
+    <table class="table">
+        <thead>
+        <tr>
+            <th>COMPETIDORES</th>
+            {% for calendario in calendarios %}
+                <th>{{ calendario.id_gp.nomeGP }}</th>
+            {% endfor %}
+            <th>TOTAL</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for participante in object_list %}
+            <tr>
+                <td>{{ participante.get_full_name }}</td>
+                {% for calendario in calendarios %}
+                    {% busca_resultado calendario.id participante.id as resultado %}
+                    <td id="part{{ participante.id }}_cor{{ calendario.id }}" class="td-resultado"
+                        data-resultado="{{ resultado }}">
+                        {{ resultado }}
+                    </td>
+                {% endfor %}
+                <td class="total"></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
+{% endblock %}
 
+{% block js %}
+    {{ block.super }}
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('.total').each(function () {
+                var resultado = 0;
+                var lista_td = $(this).parent().children('td.td-resultado');
+                for (var i = 0; i < lista_td.length; i++) {
+                    resultado += $('#'+lista_td[i].id).data("resultado");
+                }
+                $(this).append(resultado);
+            });
+
+        });
+    </script>
 {% endblock %}
