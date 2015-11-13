@@ -6,7 +6,7 @@
 <div class="container">
     <h2>Palpites para o GP</h2>
     <fieldset class="z-depth-1">
-        <form action="{% url 'cadastro_palpite2' %}" method="post">{% csrf_token %}
+        <form action="{% url 'cadastro-palpite' %}" method="post">{% csrf_token %}
 
 {#            <input type="hidden" id="{{ form.participante.id_for_label }}" name="{{ form.participante.id_for_label }}" value="{{ user.id }}">#}
 {#            <label>{{ form.participante.label }}</label> {{ user.first_name }} {{ user.last_name }}#}

@@ -16,7 +16,7 @@ class CidadeAdmin(admin.ModelAdmin):
 
 
 class GpAdmin(admin.ModelAdmin):
-    list_display = ('nomeGP', 'pais')
+    list_display = ('nomeGP', 'pais', 'bandeira')
 
 
 class GpInLine(admin.TabularInline):

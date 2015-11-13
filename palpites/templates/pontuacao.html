@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load campeotag %}
+{% load campeotag static staticfiles %}
 {% block content %}
 
     <table class="table">
@@ -7,9 +7,12 @@
         <tr>
             <th>COMPETIDORES</th>
             {% for calendario in calendarios %}
-                <th>{{ calendario.id_gp.nomeGP }}</th>
+                <th class="center">{{ calendario.id_gp.nomeGP }}
+                    <br><img class="center" src="{{ MEDIA_URL }}{{ calendario.id_gp.bandeira }}"/>
+
+                </th>
             {% endfor %}
-            <th>TOTAL</th>
+            <th class="center">TOTAL</th>
         </tr>
         </thead>
         <tbody>
@@ -18,12 +21,12 @@
                 <td>{{ participante.get_full_name }}</td>
                 {% for calendario in calendarios %}
                     {% busca_resultado calendario.id participante.id as resultado %}
-                    <td id="part{{ participante.id }}_cor{{ calendario.id }}" class="td-resultado"
+                    <td id="part{{ participante.id }}_cor{{ calendario.id }}" class="td-resultado center"
                         data-resultado="{{ resultado }}">
                         {{ resultado }}
                     </td>
                 {% endfor %}
-                <td class="total"></td>
+                <td class="total center"></td>
             </tr>
         {% endfor %}
         </tbody>
@@ -33,7 +36,7 @@
 
 {% block js %}
     {{ block.super }}
-    <script type="text/javascript">
+    <script type="text/javascript"> //faz o somatorio dos totais parciais
         $(document).ready(function () {
 
             $('.total').each(function () {

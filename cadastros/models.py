@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
-from django import forms
 from django.contrib.auth.models import User
+from projetocampeonet.settings import STATIC_URL
 
 # Create your models here.
 
@@ -97,11 +97,14 @@ class Calendario(models.Model):
 class Gp(models.Model):
     nomeGP = models.CharField(max_length=25, verbose_name='Nome do GP')
     pais = models.CharField(max_length=20, verbose_name='Pais do GP')
-    # anoGP = models.ManyToManyField('Calendario')
-    # id_Calendario = models.ForeignKey('Calendario', related_name='id_calendario', null=True, blank=True)
+    bandeira = models.ImageField(verbose_name='Bandeira', max_length=255, blank=True, upload_to='images/')
 
     def __str__(self):
         return self.nomeGP
+
+    def avatar_image(self):
+        return (STATIC_URL + self.bandeira.name) if self.bandeira else None
+        # return self.bandeira.name
 
 
 class CalendarioGP(models.Model):

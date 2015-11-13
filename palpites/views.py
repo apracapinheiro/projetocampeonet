@@ -13,6 +13,7 @@ from palpites.forms import CadastroPalpiteForm, PalpiteForm, FormGerarPontos
 from forms import FormPalpite
 # from palpites.models import Palpite as Lista
 from palpites.models import Palpite, ResultadoProva, Pontuacao, Pontos
+from projetocampeonet import settings
 
 
 class PalpiteView(View):
@@ -70,10 +71,12 @@ class ListaPontuacao(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ListaPontuacao, self).get_context_data(**kwargs)
-        calendarios_gp = CalendarioGP.objects.all().order_by('dataGP')
+        # calendarios_gp = CalendarioGP.objects.all().order_by('dataGP')
+        calendarios_gp = CalendarioGP.objects.filter(id_calendario__ano=2016) #corrigir para o ano vir como parametro
         # ObjPontuacao = Pontuacao.objects.annotate(somatorio=Sum('total'))
         # context['total_geral'] = ObjPontuacao
         context['calendarios'] = calendarios_gp
+        context['static_url'] = settings.STATIC_ROOT
         return context
 
     def get_queryset(self):
