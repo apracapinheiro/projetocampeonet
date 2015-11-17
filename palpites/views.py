@@ -1,9 +1,11 @@
 # coding=utf-8
+from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.db.models.aggregates import Sum
+from django.db.models.query_utils import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
@@ -94,14 +96,26 @@ class ListaPalpiteParticipante(ListView):
         return queryset
 
 
+@login_required(login_url='/login/')
 def cria_palpite(request):
     # Formulário enviado
     form = PalpiteForm(request.POST or None, user=request.user, ativo=1)
-    if form.is_valid():
-        form.save()
-        return redirect('sucesso')
+    palpite_realizado = Palpite.objects.filter(id_calendarioGP__ativo=1, participante_id=request.user).first()
+    # prova_ativa = Palpite.objects.filter(Q(id_calendarioGP__ativo=1) |
+    #                                      Q(participante_id=request.user)).first()
 
-    return render(request, "cadastro_palpite_old.html", {'form': form})
+    if palpite_realizado:
+        messages.add_message(request, messages.INFO, 'Palpite ja realizado para esse GP.')
+        return render(request, "cadastro_palpite_old.html")
+    else:
+        if form.is_valid():
+
+            # palpite_realizdo = prova_ativa.filter(participante_id=user)
+            form.save()
+            return redirect('sucesso')
+
+        return render(request, "cadastro_palpite_old.html", {'form': form})
+
 
 @login_required(login_url='/login/')
 def CalculaPontuacao(request):
