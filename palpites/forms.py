@@ -7,11 +7,11 @@ from palpites.models import Palpite
 from cadastros.models import Piloto, Participante
 
 
-class FormPalpite(forms.Form):
-    comentario = forms.CharField(widget=forms.Textarea(
-        attrs={'rows': 1, 'cols': 85,
-               'placeholder': 'Digite seu comentario aqui'}),
-        max_length=250)
+# class FormPalpite(forms.Form):
+#     comentario = forms.CharField(widget=forms.Textarea(
+#         attrs={'rows': 1, 'cols': 85,
+#                'placeholder': 'Digite seu comentario aqui'}),
+#         max_length=250)
     # class Meta:
     #     model = Palpite
     #

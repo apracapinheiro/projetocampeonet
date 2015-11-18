@@ -3,27 +3,29 @@ from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.mail import send_mail
+from django.core.mail.message import BadHeaderError
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.db.models.aggregates import Sum
 from django.db.models.query_utils import Q
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.views.generic import View, CreateView, ListView
 from cadastros.models import CalendarioGP, Participante
 from palpites.forms import CadastroPalpiteForm, PalpiteForm, FormGerarPontos
-from forms import FormPalpite
+
 # from palpites.models import Palpite as Lista
 from palpites.models import Palpite, ResultadoProva, Pontuacao, Pontos
 from projetocampeonet import settings
 
 
-class PalpiteView(View):
-    def get(self, request):
-        form = FormPalpite()
-        paramns = dict()
-        paramns["form"] = form
-        return render(request, 'palpite.html', paramns)
+# class PalpiteView(View):
+#     def get(self, request):
+#         form = FormPalpite()
+#         paramns = dict()
+#         paramns["form"] = form
+#         return render(request, 'palpite.html', paramns)
 
 
 class Index(View):
@@ -111,10 +113,90 @@ def cria_palpite(request):
         if form.is_valid():
 
             # palpite_realizdo = prova_ativa.filter(participante_id=user)
-            form.save()
+            # form.save()
+            envia_email(request)
             return redirect('sucesso')
 
         return render(request, "cadastro_palpite_old.html", {'form': form})
+
+# send_mail('test email', 'hello world', 'falcaof1@gmail.com', ['falcaop@gmail.com'])
+def envia_email(request):
+    form_palpite = PalpiteForm(request.POST)
+
+    participante = form_palpite.cleaned_data['participante']
+    gp = form_palpite.cleaned_data['id_calendarioGP']
+    pole = form_palpite.cleaned_data['palp_pole']
+    seg_larg = form_palpite.cleaned_data['palp_segLarg']
+    ter_larg = form_palpite.cleaned_data['palp_tercLarg']
+    qua_larg = form_palpite.cleaned_data['palp_quaLarg']
+    qui_larg = form_palpite.cleaned_data['palp_quinLarg']
+
+
+    titulo = 'Palpite realizado - %s ' % (gp)
+    from_email = 'falcaof1@gmail.com'
+    to_email = request.user.email
+
+    # retorna o valor do campo no form, no caso de choice field, o value do campo select
+    # participante = request.POST.get('participante')
+    # pole = request.POST.get('palp_pole')
+    # seg_larg = request.POST.get('palp_seglarg')
+    # ter_larg = request.POST.get('palp_tercLarg')
+    # qua_larg = request.POST.get('palp_quaLarg')
+    # qui_larg = request.POST.get('palp_quinLarg')
+
+    mensagem = """
+    Prova: %s
+    Participante: %s
+    Pole Position: %s
+    Segundo largada: %s
+    Terceiro largada: %s
+    Quarto largada: %s
+    Quinto largada: %s
+    """ % (gp, participante, pole, seg_larg, ter_larg, qua_larg, qui_larg)
+
+
+    if titulo and mensagem and from_email:
+        try:
+            # send_mail(titulo, mensagem, from_email, [to_email], html_message='This is <b>HTML</b> Content')
+            send_mail(titulo, mensagem, from_email, [to_email])
+        except BadHeaderError:
+            return HttpResponse('Invalid header found.')
+        return HttpResponseRedirect('/sucesso/')
+
+    else:
+        # In reality we'd use a form class
+        # to get proper validation errors.
+        return HttpResponse('Make sure all fields are entered and valid.')
+
+
+# def enviarorcamento(request):
+#     if request.method == 'POST':
+#         orcamentoForm = FormOrcamento(request.POST)
+#         if orcamentoForm.is_valid():
+#             try:
+#                 try:
+#                     nome = request.POST.get('nome')
+#                     email = request.POST.get('email')
+#                     telefone = request.POST.get('telefone')
+#                     cidade = request.POST.get('cidade')
+#                     estado = request.POST.get('estado')
+#                     assunto = request.POST.get('assunto')
+#                     servico = request.POST.get('servico')
+#                     texto_mensagem = request.POST.get('mensagem')
+#                     titulo = 'Solicitação de orçamento '
+#                     destino = 'guilherme.carvalho@nuvols.com.br'
+#
+#                     mensagem = """
+#                     Remetente: %s
+#                     E-mail: %s
+#                     Cidade: %s
+#                     Estado: %s
+#                     Telefone: %s
+#                     Assunto: %s
+#                     Interesse: %s
+#                     Mensagem:
+#                     %s
+#                     """ % (nome, email, cidade, estado, telefone, assunto, servico, texto_mensagem)
 
 
 @login_required(login_url='/login/')
@@ -191,15 +273,6 @@ def CalculaPontuacao(request):
 
     return render(request, 'pontos.html')
 
-
-
-# def gerar_pontos(request):
-#     form = FormGerarPontos()
-#     return render_to_response(
-#         'gerar_pontos.html',
-#         locals(),
-#         context_instance=RequestContext(request),
-#     )
 
 
 # def consulta(request, pk):#pk = nome da quadra
