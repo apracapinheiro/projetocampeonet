@@ -130,6 +130,18 @@ def envia_email(request):
     ter_larg = form_palpite.cleaned_data['palp_tercLarg']
     qua_larg = form_palpite.cleaned_data['palp_quaLarg']
     qui_larg = form_palpite.cleaned_data['palp_quinLarg']
+    vencedor = form_palpite.cleaned_data['palp_vencedor']
+    seg_lug = form_palpite.cleaned_data['palp_vegLug']
+    ter_lug = form_palpite.cleaned_data['palp_tercLug']
+    qua_lug = form_palpite.cleaned_data['palp_quaLug']
+    qui_lug = form_palpite.cleaned_data['palp_quinLug']
+    sex_lug = form_palpite.cleaned_data['palp_sexLug']
+    set_lug = form_palpite.cleaned_data['palp_setLug']
+    oit_lug = form_palpite.cleaned_data['palp_oitLug']
+    non_lug = form_palpite.cleaned_data['palp_nonLug']
+    dec_lug = form_palpite.cleaned_data['palp_decLug']
+    volta = form_palpite.cleaned_data['palp_volta']
+    comentario = form_palpite.cleaned_data['comentario']
 
 
     titulo = 'Palpite realizado - %s ' % (gp)
@@ -147,18 +159,152 @@ def envia_email(request):
     mensagem = """
     Prova: %s
     Participante: %s
+    ----------------
+    GRID DE LARGADA
+    ----------------
     Pole Position: %s
     Segundo largada: %s
     Terceiro largada: %s
     Quarto largada: %s
     Quinto largada: %s
-    """ % (gp, participante, pole, seg_larg, ter_larg, qua_larg, qui_larg)
+    ----------------
+    CORRIDA
+    ----------------
+    Vencedor: %s
+    Segundo colocado: %s
+    Terceiro colocado: %s
+    Quarto  colocado: %s
+    Quinto colocado: %s
+    Sexto colocado: %s
+    Setimo colocado: %s
+    Oitavo colocado: %s
+    Nono colocado: %s
+    Decimo colocado: %s
+    Volta rapida: %s
+    ----------------
+    COMENTARIO
+    ----------------
+    %s
+    """ % (gp, participante, pole, seg_larg, ter_larg, qua_larg, qui_larg,
+           vencedor, seg_lug, ter_lug, qua_lug, qui_lug, sex_lug, set_lug,
+           oit_lug, non_lug, dec_lug, volta, comentario)
+
+
+    html_mensagem = """
+    <html>
+        <body>
+            <style type="text/css">
+                .tg  {border-collapse:collapse;border-spacing:0;}
+                .tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+                .tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+                .tg .tg-uhdi{font-weight:bold;background-color:#f8ff00;text-align:center;vertical-align:top}
+                .tg .tg-9hbo{font-weight:bold;vertical-align:top}
+                .tg .tg-yw4l{vertical-align:top}
+                .tg .tg-39nn{font-weight:bold;background-color:#fe996b;text-align:center;vertical-align:top}
+                .tg .tg-85yq{font-weight:bold;background-color:#ffce93;vertical-align:top}
+                .tg .tg-1ndz{background-color:#ffce93;vertical-align:top}
+                .tg .tg-by96{font-weight:bold;background-color:#ffffc7;vertical-align:top}
+                .tg .tg-5fof{background-color:#ffffc7;vertical-align:top}
+                .tg .tg-8duf{font-weight:bold;background-color:#fe0000;text-align:center;vertical-align:top}
+                label {font-weight:bold;font-size:22px}
+            </style>
+            <label>%s</label><br/>
+            <label>Participante: %s</label>
+            <p>
+            <table class="tg">
+              <tr>
+                <td class="tg-39nn" colspan="2">GRID LARGADA</td>
+              </tr>
+              <tr>
+                <td class="tg-9hbo">Pole position:</td>
+                <td class="tg-yw4l">%s</td>
+              </tr>
+              <tr>
+                <td class="tg-85yq">Segundo largada:</td>
+                <td class="tg-1ndz">%s</td>
+              </tr>
+              <tr>
+                <td class="tg-9hbo">Terceiro largada:</td>
+                <td class="tg-yw4l">%s</td>
+              </tr>
+              <tr>
+                <td class="tg-85yq">Quarto largada:</td>
+                <td class="tg-1ndz">%s</td>
+              </tr>
+              <tr>
+                <td class="tg-9hbo">Quinto largada</td>
+                <td class="tg-yw4l">%s</td>
+              </tr>
+              <tr>
+                <td class="tg-uhdi" colspan="2">CORRIDA</td>
+              </tr>
+              <tr>
+                <td class="tg-9hbo">Vencedor:</td>
+                <td class="tg-yw4l">%s</td>
+              </tr>
+              <tr>
+                <td class="tg-by96">Segundo colocado:</td>
+                <td class="tg-5fof">%s</td>
+              </tr>
+              <tr>
+                <td class="tg-9hbo">Terceiro colocado:</td>
+                <td class="tg-yw4l">%s</td>
+              </tr>
+              <tr>
+                <td class="tg-by96">Quarto colocado:</td>
+                <td class="tg-5fof">%s</td>
+              </tr>
+              <tr>
+                <td class="tg-9hbo">Quinto colocado:</td>
+                <td class="tg-yw4l">%s</td>
+              </tr>
+              <tr>
+                <td class="tg-by96">Sexto colocado:</td>
+                <td class="tg-5fof">%s</td>
+              </tr>
+              <tr>
+                <td class="tg-9hbo">Setimo colocado:</td>
+                <td class="tg-yw4l">%s</td>
+              </tr>
+              <tr>
+                <td class="tg-by96">Oitavo colocado:</td>
+                <td class="tg-5fof">%s</td>
+              </tr>
+              <tr>
+                <td class="tg-9hbo">Nono colocado:</td>
+                <td class="tg-yw4l">%s</td>
+              </tr>
+              <tr>
+                <td class="tg-by96">Decimo colocado:</td>
+                <td class="tg-5fof">%s</td>
+              </tr>
+              <tr>
+                <td class="tg-9hbo">Volta rapida:</td>
+                <td class="tg-yw4l">%s</td>
+              </tr>
+              <tr>
+                <td class="tg-8duf" colspan="2">Comentario:</td>
+              </tr>
+              <tr>
+                <td class="tg-yw4l" colspan="2">%s</td>
+              </tr>
+            </table>
+        </body>
+    </html>
+    """ % (gp, participante, pole, seg_larg, ter_larg, qua_larg, qui_larg,
+           vencedor, seg_lug, ter_lug, qua_lug, qui_lug, sex_lug, set_lug,
+           oit_lug, non_lug, dec_lug, volta, comentario)
+
+
+
+
+
 
 
     if titulo and mensagem and from_email:
         try:
-            # send_mail(titulo, mensagem, from_email, [to_email], html_message='This is <b>HTML</b> Content')
-            send_mail(titulo, mensagem, from_email, [to_email])
+            send_mail(titulo, mensagem, from_email, [to_email], html_message=html_mensagem)
+            # send_mail(titulo, mensagem, from_email, [to_email])
         except BadHeaderError:
             return HttpResponse('Invalid header found.')
         return HttpResponseRedirect('/sucesso/')
@@ -168,35 +314,6 @@ def envia_email(request):
         # to get proper validation errors.
         return HttpResponse('Make sure all fields are entered and valid.')
 
-
-# def enviarorcamento(request):
-#     if request.method == 'POST':
-#         orcamentoForm = FormOrcamento(request.POST)
-#         if orcamentoForm.is_valid():
-#             try:
-#                 try:
-#                     nome = request.POST.get('nome')
-#                     email = request.POST.get('email')
-#                     telefone = request.POST.get('telefone')
-#                     cidade = request.POST.get('cidade')
-#                     estado = request.POST.get('estado')
-#                     assunto = request.POST.get('assunto')
-#                     servico = request.POST.get('servico')
-#                     texto_mensagem = request.POST.get('mensagem')
-#                     titulo = 'Solicitação de orçamento '
-#                     destino = 'guilherme.carvalho@nuvols.com.br'
-#
-#                     mensagem = """
-#                     Remetente: %s
-#                     E-mail: %s
-#                     Cidade: %s
-#                     Estado: %s
-#                     Telefone: %s
-#                     Assunto: %s
-#                     Interesse: %s
-#                     Mensagem:
-#                     %s
-#                     """ % (nome, email, cidade, estado, telefone, assunto, servico, texto_mensagem)
 
 
 @login_required(login_url='/login/')
