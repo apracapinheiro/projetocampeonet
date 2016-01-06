@@ -111,15 +111,13 @@ def cria_palpite(request):
         return render(request, "cadastro_palpite_old.html")
     else:
         if form.is_valid():
-
-            # palpite_realizdo = prova_ativa.filter(participante_id=user)
-            # form.save()
+            form.save()
             envia_email(request)
             return redirect('sucesso')
 
         return render(request, "cadastro_palpite_old.html", {'form': form})
 
-# send_mail('test email', 'hello world', 'falcaof1@gmail.com', ['falcaop@gmail.com'])
+
 def envia_email(request):
     form_palpite = PalpiteForm(request.POST)
 
@@ -144,7 +142,6 @@ def envia_email(request):
         dec_lug = form_palpite.cleaned_data['palp_decLug']
         volta = form_palpite.cleaned_data['palp_volta']
         comentario = form_palpite.cleaned_data['comentario']
-
 
         titulo = 'Palpite realizado - %s ' % (gp)
         from_email = 'falcaof1@gmail.com'
@@ -297,16 +294,10 @@ def envia_email(request):
                vencedor, seg_lug, ter_lug, qua_lug, qui_lug, sex_lug, set_lug,
                oit_lug, non_lug, dec_lug, volta, comentario)
 
-
-
-
-
-
-
         if titulo and mensagem and from_email:
             try:
                 send_mail(titulo, mensagem, from_email, [to_email], html_message=html_mensagem)
-                # send_mail(titulo, mensagem, from_email, [to_email])
+                # send_mail(titulo, mensagem, from_email, [to_email]) #envia o e-mail em modo texto
             except BadHeaderError:
                 return HttpResponse('Invalid header found.')
             return HttpResponseRedirect('/sucesso/')
