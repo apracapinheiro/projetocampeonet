@@ -14,7 +14,7 @@ import os
 from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-
+LOCAL = os.path.dirname(os.path.abspath(__file__))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
@@ -90,6 +90,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+MEDIA_URL = '/fotos/' #"apelido" do caminho das imagens
+
+STATIC_ROOT = os.path.join(LOCAL, 'static')
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static') #caminho fisico onde se encontra os arquivos de imagens
+
 STATICFILES_DIRS = (
    BASE_DIR + '/static/',
 )
@@ -104,10 +110,16 @@ TEMPLATE_CONTEXT_PROCESSORS = TCP + (
 
 # email config para teste do password_reset em modo DEBUG
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = '127.0.0.1'
-EMAIL_PORT = 1025
-EMAIL_USE_TLS = False
-DEFAULT_FROM_EMAIL = 'testing@example.com'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = '127.0.0.1'
+# EMAIL_PORT = 1025
+# EMAIL_USE_TLS = False
+# DEFAULT_FROM_EMAIL = 'testing@example.com'
 # EMAIL_HOST_USER = ''
 # EMAIL_HOST_PASSWORD = ''
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'falcaof1@gmail.com'
+EMAIL_HOST_PASSWORD = 'juoukdittrqillwa'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True

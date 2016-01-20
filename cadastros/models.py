@@ -1,13 +1,19 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
-from django import forms
+from django.contrib.auth.models import User
+from projetocampeonet.settings import STATIC_URL
 
 # Create your models here.
 
 CHOICES_TIPO = (
     ('A', 'Administrador'),
     ('U', 'Usuário'),
+)
+
+CHOICES_ATIVO =(
+    ('0', 'INATIVO'),
+    ('1', 'ATIVO'),
 )
 
 
@@ -36,6 +42,7 @@ class EquipePiloto(models.Model):
     id_equipe = models.ForeignKey('Equipe', related_name='id_equipe', verbose_name='Equipe')
     id_piloto1 = models.ForeignKey('Piloto', related_name='id_piloto1', verbose_name='Primeiro Piloto', null=True, blank=True)
     id_piloto2 = models.ForeignKey('Piloto', related_name='id_piloto2', verbose_name='Segundo Piloto', null=True, blank=True)
+    ano = models.DateField(verbose_name="Ano da equipe", unique=True, null=True)
 
     def __unicode__(self):
         return str(self.id_equipe)
@@ -49,24 +56,32 @@ class Cidade(models.Model):
         return self.nome_cidade
 
 
-class Participante(models.Model):
-    nome = models.CharField(max_length=50, verbose_name="Nome do participante")
+# class Pessoa(models.Model):
+#     class Meta:
+#         abstract = True
+#
+#     nome = models.CharField(max_length=100)
+#     data_nascimento = models.DateField()
+#     endereco = models.CharField(max_length=100)
+#
+# class Cliente(Pessoa):
+#     compra_sempre = models.BooleanField(default=False)
+
+
+
+class Participante(User):
     endereco = models.CharField(max_length=100, verbose_name="Endereço")
     telefone = models.CharField(max_length=15, blank=True, verbose_name="Telefone")
     id_cidade = models.ForeignKey('Cidade', related_name='id_cidade', verbose_name='Cidade')
-    email = models.EmailField(max_length=60, unique=True, verbose_name="E-mail")
-    tipo = models.CharField(max_length=1, choices=CHOICES_TIPO, verbose_name="Tipo usuário")
-    login = models.CharField(max_length=15, unique=True, verbose_name="Login")
-    senha = models.CharField(max_length=10, verbose_name="Senha")
-    criado_em = models.DateTimeField(auto_now=True, verbose_name="Data criação cadastro")
 
     class Meta:
-        ordering = ['nome']
         verbose_name = 'Participante'
         verbose_name_plural = 'Participantes'
 
-    def __str__(self):
-        return self.nome
+    def __unicode__(self):
+        # return "{0} - {1}".format(self.first_name, self.last_name)
+        return '%s %s' % (self.first_name, self.last_name)
+        # return self.first_name
 
 
 class Calendario(models.Model):
@@ -82,17 +97,22 @@ class Calendario(models.Model):
 class Gp(models.Model):
     nomeGP = models.CharField(max_length=25, verbose_name='Nome do GP')
     pais = models.CharField(max_length=20, verbose_name='Pais do GP')
-    # anoGP = models.ManyToManyField('Calendario')
-    # id_Calendario = models.ForeignKey('Calendario', related_name='id_calendario', null=True, blank=True)
+    bandeira = models.ImageField(verbose_name='Bandeira', max_length=255, blank=True, upload_to='images/')
 
     def __str__(self):
         return self.nomeGP
+
+    def avatar_image(self):
+        return (STATIC_URL + self.bandeira.name) if self.bandeira else None
+        # return self.bandeira.name
 
 
 class CalendarioGP(models.Model):
     id_calendario = models.ForeignKey('Calendario', related_name='id_calendario', verbose_name='Ano')
     id_gp = models.ForeignKey('Gp', related_name='id_gp', verbose_name='Grande Premio')
     dataGP = models.DateField(verbose_name='Data do GP')
+    posicao_bonus = models.IntegerField(verbose_name='Posicao bonificada na chegada', blank=True, null=True)
+    ativo = models.BooleanField(verbose_name='Ativo/Inativo?', default=None)
 
     def __unicode__(self):
         # return str(self.id_gp)

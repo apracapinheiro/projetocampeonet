@@ -1,12 +1,12 @@
 {% extends "base.html" %}
-{% block title %}Bem vindo ao site CampeoNET{% endblock %}
-{% block head %}Bem vido ao site CampeoNET {% endblock %}
+{% block title %}Palpite realizado com sucesso{% endblock %}
+{% block head %}Palpite realizado com sucesso {% endblock %}
 
 {% block content %}
 
         {% if user.username %}
-            <p>Bem vindo {{ user.username }}! Você já pode realizar o seu palpite para
-            o próximo GP.</p>
+            <h4>Boa sorte {{ user.username }}! O seu palpite para
+            o próximo GP foi realizado com sucesso!</h4>
         {% else %}
             <p>Bem vindo visitante. Para realizar um palpite e necessario realizar o
             login. Clique <a href="{% url 'login' %}">aqui</a>.</p>

@@ -5,14 +5,9 @@ from projetocampeonet import settings
 
 class ParticipanteAdmin(admin.ModelAdmin):
     list_display = (
-        'nome',
-        'login',
-        'senha',
-        'endereco',
-        'telefone',
-        'email',
-        'tipo',
-        'criado_em',
+        'first_name',
+        'username',
+        'is_staff',
     )
 
 
@@ -21,7 +16,7 @@ class CidadeAdmin(admin.ModelAdmin):
 
 
 class GpAdmin(admin.ModelAdmin):
-    list_display = ('nomeGP', 'pais')
+    list_display = ('nomeGP', 'pais', 'bandeira')
 
 
 class GpInLine(admin.TabularInline):
@@ -64,7 +59,7 @@ class PilotoAdmin(admin.ModelAdmin):
 
 
 class EquipePilotoAdmin(admin.ModelAdmin):
-    list_display =('id_equipe', 'id_piloto1', 'id_piloto2')
+    list_display =('id_equipe', 'id_piloto1', 'id_piloto2', 'ano')
 
 
 

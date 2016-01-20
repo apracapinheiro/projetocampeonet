@@ -2,10 +2,12 @@
 {% block title %}Cadastro de usuario{% endblock %}
 {% block head %}Cadastro de usuario{% endblock %}
 {% block content %}
-
-    <form method="post" action=".">
-    {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="register" />
-    </form>
+    <br>
+    <fieldset class="z-depth-1">
+        <form method="post" action=".">
+        {% csrf_token %}
+            {{ form.as_table }}
+            <input type="submit" value="register" />
+        </form>
+    </fieldset>
 {% endblock %}

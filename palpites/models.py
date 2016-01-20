@@ -2,6 +2,7 @@ from django.db import models
 from cadastros.models import Participante, Gp, Piloto
 
 
+
 class Palpite(models.Model):
     participante = models.ForeignKey('cadastros.Participante', related_name='id_participante', verbose_name='Participante')
     id_calendarioGP = models.ForeignKey('cadastros.CalendarioGP', related_name='id_palpiteGP', verbose_name='GP', null=True, blank=True)

@@ -7,10 +7,10 @@ from django.template import RequestContext
 from django.views.generic import CreateView, ListView
 from django.core.urlresolvers import reverse_lazy
 
-from cadastros.forms import *
-from cadastros.models import *
-from palpites.models import *
-from palpites.forms import *
+from cadastros.forms import CadastroParticipante, RegistrationForm
+from cadastros.models import Participante, CalendarioGP
+from palpites.models import ResultadoProva, Palpite
+from palpites.forms import FormGerarPontos
 
 
 class Criar(CreateView):
@@ -36,6 +36,16 @@ def register_page(request):
     variables = RequestContext(request, {'form': form})
 
     return render_to_response('registration/register.html', variables)
+
+
+class ListaGP(ListView):
+    template_name = 'lista-gp.html'
+    model = CalendarioGP
+    # context_object_name = 'lista_gp'
+
+    def get_queryset(self):
+        queryset = CalendarioGP.objects.all().order_by('-ativo', '-dataGP')
+        return queryset
 
 
     # if request.method == 'POST':
@@ -80,3 +90,13 @@ class ListaResultado(ListView):
     def get_context_data(self, **kwargs):
         context = super(ListaResultado, self).get_context_data(**kwargs)
         return context
+
+
+class ListaParticipantes(ListView):
+    template_name = 'participantes.html'
+    model = Palpite
+    # context_object_name = 'lista_gp'
+
+    def get_queryset(self):
+        queryset = Palpite.objects.all().filter(id_calendarioGP__ativo=1)
+        return queryset
