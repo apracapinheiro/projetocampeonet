@@ -13,6 +13,10 @@
         </ul>
     {% endif %}
 
+    {% if mensagem %}
+        {{ mensagem.msg }}{{ duplicados.pilotos_repetidos }}
+    {% endif %}
+
     {% if form %}
         <h2>Palpites para o GP</h2>
         <fieldset class="z-depth-1">

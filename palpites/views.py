@@ -19,6 +19,8 @@ from palpites.forms import CadastroPalpiteForm, PalpiteForm, FormGerarPontos
 from palpites.models import Palpite, ResultadoProva, Pontuacao, Pontos
 from projetocampeonet import settings
 
+import collections
+from collections import Counter
 
 # class PalpiteView(View):
 #     def get(self, request):
@@ -105,15 +107,51 @@ def cria_palpite(request):
     palpite_realizado = Palpite.objects.filter(id_calendarioGP__ativo=1, participante_id=request.user).first()
     # prova_ativa = Palpite.objects.filter(Q(id_calendarioGP__ativo=1) |
     #                                      Q(participante_id=request.user)).first()
-
+    mensagem = {}
+    duplicados = {}
     if palpite_realizado:
         messages.add_message(request, messages.INFO, 'Palpite ja realizado para esse GP.')
         return render(request, "cadastro_palpite_old.html")
     else:
         if form.is_valid():
-            form.save()
-            envia_email(request)
-            return redirect('sucesso')
+            pole = form.cleaned_data['palp_pole']
+            seg_larg = form.cleaned_data['palp_segLarg']
+            ter_larg = form.cleaned_data['palp_tercLarg']
+            qua_larg = form.cleaned_data['palp_quaLarg']
+            qui_larg = form.cleaned_data['palp_quinLarg']
+            vencedor = form.cleaned_data['palp_vencedor']
+            seg_lug = form.cleaned_data['palp_vegLug']
+            ter_lug = form.cleaned_data['palp_tercLug']
+            qua_lug = form.cleaned_data['palp_quaLug']
+            qui_lug = form.cleaned_data['palp_quinLug']
+            sex_lug = form.cleaned_data['palp_sexLug']
+            set_lug = form.cleaned_data['palp_setLug']
+            oit_lug = form.cleaned_data['palp_oitLug']
+            non_lug = form.cleaned_data['palp_nonLug']
+            dec_lug = form.cleaned_data['palp_decLug']
+
+            grid_largada = pole, seg_larg, ter_larg, qua_larg, qui_larg  # palpite pilotos grid largada
+            grid_chegada = vencedor, seg_lug, ter_lug, qua_lug, qui_lug, sex_lug, set_lug, oit_lug, non_lug, dec_lug  # palpite pilotos grid chegada
+
+            if Counter(grid_largada).__len__() < 5:  # verifica se os 5 pilotos do grid de largada são diferentes
+                repetidos = [item for item, count in collections.Counter(grid_largada).items() if count > 1]
+                duplicados['pilotos_repetidos'] = repetidos  # recebe os pilotos que estao repetidos no grid de largada
+                mensagem['msg'] = u"Por favor, nao pode haver piloto ocupando multiplas posicoes no grid de largada!"
+                return render(request, "cadastro_palpite_old.html",
+                              {'form': form, 'mensagem': mensagem, 'duplicados': duplicados})
+            else:
+                if Counter(grid_chegada).__len__() < 10:  # verifica se 10 pilotos do grid de chegada são diferentes
+                    repetidos = [item for item, count in collections.Counter(grid_chegada).items() if count > 1]
+                    duplicados[
+                        'pilotos_repetidos'] = repetidos  # recebe os pilotos que estao repetidos no grid de chegada
+                    mensagem[
+                        'msg'] = u"Por favor, nao pode haver piloto ocupando multiplas posicoes no grid de chegada!"
+                    return render(request, "cadastro_palpite_old.html",
+                                  {'form': form, 'mensagem': mensagem, 'duplicados': duplicados})
+                else:  # se não existirem pilotos repetidos nos grids, o palpite é salvo no banco
+                    form.save()
+                    envia_email(request)
+                    return redirect('sucesso')
 
         return render(request, "cadastro_palpite_old.html", {'form': form})
 
