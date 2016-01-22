@@ -78,9 +78,9 @@ class Participante(User):
         verbose_name = 'Participante'
         verbose_name_plural = 'Participantes'
 
-    def __unicode__(self):
-        # return "{0} - {1}".format(self.first_name, self.last_name)
-        return '%s %s' % (self.first_name, self.last_name)
+    def __str__(self):
+        # return "{0} {1}".format(self.first_name, self.last_name)
+        return '%s %s' % format(self.first_name, self.last_name)
         # return self.first_name
 
 
